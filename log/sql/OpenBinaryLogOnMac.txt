@@ -1,0 +1,22 @@
+====================================================================================================
+#Open mysql binary log on Mac
+
+1.Check path
+mysql --help --verbose | grep my.cnf 
+
+2.Go to /usr/local/mysql/etc/
+
+3.Create my.cnf in /usr/local/mysql/etc/, and add the following
+[mysqld]
+# log_bin
+log-bin = mysql-bin #开启binlog
+binlog-format = ROW #选择row模式
+server_id = 1 #配置mysql replication需要定义，不能喝canal的slaveId重复
+
+4.Restart mysql with command mysql restart
+
+5.In DBeaver, run show variables like '%log_bin%' to check bin log path
+
+==========
+Reference:https://blog.csdn.net/zhengyong15984285623/article/details/73335646
+====================================================================================================

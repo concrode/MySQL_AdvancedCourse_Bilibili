@@ -1,0 +1,88 @@
+=============================================================================
+# Online course URL
+https://www.bilibili.com/video/BV1UQ4y1P7Xr?p=83
+
+=============================================================================
+#Become sudo user on Mac
+-> sudo -s
+undo user on Mac
+-> sudo -i
+
+=============================================================================
+#mysql can't login:ERROR 2002 (HY000): Can't connect to local MySQL server through socket
+==========
+Solution1:
+In terminal:
+-> mysqld
+-> sudo mysqld_safe    then mysql can start 
+
+if you want to shutdown running mysqld, in terminal
+-> mysqladmin -uroot -pXXXXXXX shutdown
+
+Reference: https://www.jianshu.com/p/d9790602b9d5
+https://stackoverflow.com/questions/11091414/how-to-stop-mysqld
+
+==========
+Solution2:
+In terminal:
+-> sudo -s #This is super user
+-> cd /usr/local/mysql
+-> cd support-files
+-> ./mysql.server start
+
+=============================================================================
+#Mac identify user
+In terminal:
+-> id -F
+
+=============================================================================
+#Create a new user in mysql
+create user 'Jack'@'localhost' identified by '393496296';
+grant all privileges on *.* to 'Jack'@'localhost';
+update mysql.`user` set plugin='mysql_native_password' where `User` = 'Jack';
+flush privileges;
+
+=============================================================================
+ls -a   #List all files including hidden files
+ls -la  #Check permission
+ls -laF #Check permission
+
+=============================================================================
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+-- Because mysql.server has not been started, so we need to go to mysql/support-files/mysql.server to start 
+
+###################Terminal Start####################################
+MacBook ~ % cd /usr/local/mysql/support-files
+MacBook support-files % ./mysql.server start
+Starting MySQL
+./usr/local/mysql/bin/mysqld_safe: line 144: /usr/local/mysql/data/MacBook1.modem.err: Permission denied
+/usr/local/mysql/bin/mysqld_safe: line 144: /usr/local/mysql/data/MacBook1..modem.err: Permission denied
+/usr/local/mysql/bin/mysqld_safe: line 198: /usr/local/mysql/data/MacBook1.modem.err: Permission denied
+/usr/local/mysql/bin/mysqld_safe: line 144: /usr/local/mysql/data/MacBook1..modem.err: Permission denied
+ ERROR! The server quit without updating PID file (/usr/local/mysql/data/MacBook1..modem.pid).
+###################Terminal End#######################################
+
+There is permission error, so we need to go to mysql/data folder, give data folder all users permission
+
+Then,
+###################Terminal Start####################################
+MacBook mysql % ls
+LICENSE		data		include		man
+README		docs		keyring		share
+bin		etc		lib		support-files
+MacBook  mysql % sudo chmod -R 777 data
+Password:
+MacBook  mysql % cd support-files
+MacBook  support-files % ./mysql.server start
+Starting MySQL
+. SUCCESS!
+###################Terminal End#######################################
+
+
+
+
+
+
+
+
+
